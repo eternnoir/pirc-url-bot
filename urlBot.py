@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 import irc.bot
 import irc.strings
+import re
 from irc.client import ip_numstr_to_quad, ip_quad_to_numstr
-
+from BeautifulSoup import BeautifulSoup
 
 class Sender(object):
     def __init__(self, urlbot, to, url,senderId, at_time):
@@ -43,6 +44,7 @@ class Bot(irc.bot.SingleServerIRCBot):
     def __init__(self, channel, nickname, server, port=6667):
         irc.bot.SingleServerIRCBot.__init__(self, [(server, port)], nickname, nickname)
         self.channel = channel
+        self.url_regexp=re.compile("""((?:[a-z][\w-]+:(?:/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))""")
 
     def on_nicknameinuse(self, c, e):
         c.nick(c.get_nickname() + "_")
@@ -55,11 +57,14 @@ class Bot(irc.bot.SingleServerIRCBot):
 
     def on_pubmsg(self, c, e):
         print e.source.nick
-        print e.arguments[0]
-        a = e.arguments[0].split(":", 1)
-        if len(a) > 1 and irc.strings.lower(a[0]) == irc.strings.lower(self.connection.get_nickname()):
-            self.do_command(e, a[1].strip())
-        return
+        data = e.arguments[0]
+        for url in re.findall(self.url_regexp, data):
+            url=url[0]
+            if not url.startswith('http'):
+                url='http://'+url
+            print url
+            #Sender(self, to, url,idName, self.last_message).start()
+
 
     def say(self,c,msg):
         c.privmsg(self.channel,msg)
