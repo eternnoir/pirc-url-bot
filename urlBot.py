@@ -61,4 +61,15 @@ class Bot(irc.bot.SingleServerIRCBot):
             self.do_command(e, a[1].strip())
         return
 
+    def say(self,c,msg):
+        c.privmsg(self.channel,msg)
 
+def main():
+    channel= '#CS_RDSS'
+    nickname= 'urlBot2'
+    server='chat.freenode.net'
+    bot = Bot(channel, nickname, server)
+    bot.start()
+
+if __name__ == '__main__' :
+    main()
