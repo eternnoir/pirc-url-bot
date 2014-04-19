@@ -4,6 +4,7 @@ import irc.strings
 import re
 from irc.client import ip_numstr_to_quad, ip_quad_to_numstr
 from BeautifulSoup import BeautifulSoup
+import config
 
 class Sender(object):
     def __init__(self, urlbot, to, url,senderId, at_time):
@@ -70,10 +71,11 @@ class Bot(irc.bot.SingleServerIRCBot):
         c.privmsg(self.channel,msg)
 
 def main():
-    channel= '#CS_RDSS'
-    nickname= 'urlBot2'
-    server='chat.freenode.net'
-    bot = Bot(channel, nickname, server)
+    channel= config.channel
+    nickname= config.nickname
+    server= config.server
+    port = config.port
+    bot = Bot(channel, nickname, server,port)
     bot.start()
 
 if __name__ == '__main__' :
