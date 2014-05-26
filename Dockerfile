@@ -10,5 +10,7 @@ RUN apt-get install -y python python-dev python-pip python-virtualenv
 
 ADD . /src
 
+RUN pip install -r /src/requirements.txt
+
 # Define default command.
-CMD ["bash"]
+CMD ["python","/src/urlBot.py"]
