@@ -87,7 +87,7 @@ class Bot(irc.bot.SingleServerIRCBot):
             url = url[0]
             if not url.startswith('http'):
                 url = 'http://'+url
-            #print url.encode('utf-8')
+            url = url.encode('utf-8')
             Sender(self, c, url, idName, 1).start()
 
     def say(self, c, msg):
