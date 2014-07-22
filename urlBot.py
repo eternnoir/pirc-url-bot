@@ -101,6 +101,12 @@ class Bot(irc.bot.SingleServerIRCBot):
 def main():
     args = parser.parse_args()
     print args
+    channel = args.channel
+    nick = args.nick
+    host = args.host
+    port = args.port
+    bot = Bot(channel, nick, host, port)
+    bot.start()
 
 if __name__ == '__main__':
     main()
