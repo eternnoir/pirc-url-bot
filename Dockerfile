@@ -3,14 +3,17 @@
 #
 
 # Pull base image.
-FROM dockerfile/ubuntu
+FROM eternnoir/ubuntu-pypy
 
 # Install Python.
-RUN apt-get install -y python python-dev python-pip python-virtualenv
-
 ADD . /src
-
 RUN pip install -r /src/requirements.txt
 
+ENV HOST chat.freenode.net
+ENV NICK pirc-url-bot
+ENV CHANNEL '#pirc-url-bot'
+ENV PORT 6667
+
+
 # Define default command.
-CMD ["python","/src/urlBot.py"]
+CMD pypy /src/urlBot.py -c $CHANNEL -n $NICK -P $PORT -s $HOST
