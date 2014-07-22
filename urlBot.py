@@ -1,17 +1,22 @@
 # -*- coding: utf-8 -*-
+import urllib2
+from threading import *
+import time
+
 import irc.bot
 import irc.strings
 import re
-import urllib2
-import htmlentitydefs
-from threading import *
-from irc.client import ip_numstr_to_quad, ip_quad_to_numstr
 from BeautifulSoup import BeautifulSoup
-import os
-import sys
-import datetime
-import time
-import config
+import argparse
+
+parser = argparse.ArgumentParser(description='This is a irc url title bot.')
+parser.add_argument('-c', action="store", dest="channel")
+parser.add_argument('-s', action="store", dest="host", default="chat.freenode.net")
+parser.add_argument('-P', action="store", dest="port", type=int, default=6667)
+parser.add_argument('-n', action="store", dest="nick", default="pirctitlebot")
+parser.add_argument('-u', action="store", dest="user")
+parser.add_argument('-p', action="store", dest="pwd")
+
 
 
 class Sender(object):
@@ -93,14 +98,9 @@ class Bot(irc.bot.SingleServerIRCBot):
     def say(self, c, msg):
         c.privmsg(self.channel, msg)
 
-
 def main():
-    channel = config.channel
-    nickname = config.nickname
-    server = config.server
-    port = config.port
-    bot = Bot(channel, nickname, server, port)
-    bot.start()
+    args = parser.parse_args()
+    print args
 
 if __name__ == '__main__':
     main()
